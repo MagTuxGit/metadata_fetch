@@ -17,10 +17,10 @@ class MetadataParser {
     ];
 
     for (final p in parsers) {
-      output.title ??= p.title;
-      output.description ??= p.description;
-      output.image ??= _imageUrl(p);
-      output.url ??= p.url;
+      output.title ??= _notNull(p.title);
+      output.description ??= _notNull(p.description);
+      output.image ??= _notNull(_imageUrl(p));
+      output.url ??= _notNull(p.url);
 
       if (output.hasAllMetadata) {
         break;
@@ -28,6 +28,13 @@ class MetadataParser {
     }
 
     return output;
+  }
+
+  static String _notNull(String value) {
+    if (value == null || value == "" || value == "null") {
+      return null;
+    }
+    return value;
   }
 
   static String _imageUrl(Metadata data) {
