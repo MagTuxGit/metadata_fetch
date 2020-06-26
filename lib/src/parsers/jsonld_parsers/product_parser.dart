@@ -35,7 +35,8 @@ class JsonLdProductParser with BaseMetadataParser {
     if (offer != null) {
       var price = offer.getValue('price');
       if (price != null) {
-        return (description != null ? description + '\n\n' : "") + offer.getValue('priceCurrency') + ' ' + price;
+        return ((description != null && description.isNotEmpty) ? description + '\n\n' : "")
+            + offer.getValue('priceCurrency') + ' ' + price;
       }
     }
     return description;
