@@ -29,12 +29,13 @@ class JsonLdProductParser with BaseMetadataParser {
 
   @override
   String get description {
-    String description = _jsonData?.getValue('description') ?? "";
+    String description = _jsonData?.getValue('description');
+
     var offer = _jsonData?.getDynamic('offers');
     if (offer != null) {
       var price = offer.getValue('price');
       if (price != null) {
-        return description + '/n/n' + offer.getValue('priceCurrency') + ' ' + price;
+        return (description != null ? description + '\n\n' : "") + offer.getValue('priceCurrency') + ' ' + price;
       }
     }
     return description;
