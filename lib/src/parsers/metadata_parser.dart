@@ -10,6 +10,7 @@ class MetadataParser {
     final output = Metadata();
 
     final parsers = [
+      jsonLdProduct(document),
       openGraph(document),
       twitterCard(document),
       jsonLdSchema(document),
@@ -43,6 +44,10 @@ class MetadataParser {
     if (imageLink.startsWith("http")) return imageLink;
     var pageUrl = Uri.parse(data.url);
     return pageUrl.scheme + "://" + pageUrl.host + imageLink;
+  }
+
+  static Metadata jsonLdProduct(Document document) {
+    return JsonLdProductParser(document).parse();
   }
 
   static Metadata openGraph(Document document) {

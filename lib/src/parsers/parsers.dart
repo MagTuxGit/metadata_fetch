@@ -5,3 +5,4 @@ export 'htmlmeta_parser.dart';
 export 'opengraph_parser.dart';
 export 'jsonld_parser.dart';
 export 'twittercard_parser.dart';
+export 'jsonld_parsers/product_parser.dart';
