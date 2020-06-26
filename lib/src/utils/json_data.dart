@@ -8,7 +8,11 @@ class JsonData {
   }
   
   String getValue(String key) {
-    return getDynamic(key)?.data;
+    var value = getDynamic(key)?.data;
+    if (value is List && value.isNotEmpty) {
+      return value.first;
+    }
+    return value.toString();
   }
 
   JsonData getDynamic(String key) {
