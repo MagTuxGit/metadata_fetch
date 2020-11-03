@@ -25,18 +25,18 @@ void main() {
     print(data);
 
     // Just Opengraph
-    var og = MetadataParser.OpenGraph(document);
+    var og = MetadataParser.openGraph(document);
     print('OG $og');
 
     // Just Html
-    var hm = MetadataParser.HtmlMeta(document);
+    var hm = MetadataParser.htmlMeta(document);
     print('Html $hm');
 
     // Just Json-ld schema
-    var js = MetadataParser.JsonLdSchema(document);
+    var js = MetadataParser.jsonLdSchema(document);
     print('JSON $js');
 
-    var twitter = MetadataParser.TwitterCard(document);
+    var twitter = MetadataParser.twitterCard(document);
     print('Twitter $twitter');
   });
   group('Metadata parsers', () {
@@ -158,6 +158,18 @@ void main() {
     test('Invalid Url Test', () async {
       var data = await extract('https://google');
       expect(data == null, true);
+    });
+
+    test(
+        "Image url without slash at beginning still results in valid url when falling back to html parser",
+        () async {
+      // This test is extremely brittle, would be better to use a site that
+      // is more likely to always be available. Or better yet a custom
+      // document that will always cause this situation to happen
+      var data = await extract(
+          "https://underjord.io/live-server-push-without-js.html");
+      expect(data.image,
+          equals("https://underjord.io/assets/images/logotype.png"));
     });
   });
 }
