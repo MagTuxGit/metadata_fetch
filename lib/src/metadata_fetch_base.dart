@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:html/dom.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,16 @@ Future<Metadata> extract(String url) async {
   defaultOutput.description = url;
 
   // Make our network call
-  final response = await http.get(url, headers: {'User-Agent': "Googlebot"});
+  http.Response response;
+  try {
+    response = await http.get(url, headers: {
+      'User-Agent': "Googlebot"
+    }).timeout(const Duration(seconds: 10));
+  } on TimeoutException catch (_) {}
+
+  if (response == null || response.statusCode >= 400) {
+    response = await http.get(url);
+  }
 
   if (response.headers["content-type"].startsWith(r"image/")) {
     defaultOutput.title = "";
