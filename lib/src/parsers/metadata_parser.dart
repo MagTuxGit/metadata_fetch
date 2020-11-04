@@ -20,7 +20,7 @@ class MetadataParser {
     for (final p in parsers) {
       output.title ??= _notNull(p.title);
       output.description ??= _notNull(p.description);
-      output.image ??= _notNull(_imageUrl(p));
+      output.image ??= _imageUrl(p);
       output.url ??= _notNull(p.url);
 
       if (output.hasAllMetadata) {
@@ -39,7 +39,7 @@ class MetadataParser {
   }
 
   static String _imageUrl(Metadata data) {
-    String imageLink = data.image;
+    String imageLink = _notNull(data.image);
     if (imageLink == null) return null;
     if (imageLink.startsWith("http")) return imageLink;
     var pageUrl = Uri.parse(data.url);
