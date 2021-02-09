@@ -31,9 +31,9 @@ Future<Metadata> extract(String url) async {
     response = await http.get(url);
   }
 
-  if (response.headers["content-type"].startsWith(r"image/")) {
-    defaultOutput.title = "";
-    defaultOutput.description = "";
+  if (response.headers['content-type'].startsWith(r'image/')) {
+    defaultOutput.title = '';
+    defaultOutput.description = '';
     defaultOutput.image = url;
     return defaultOutput;
   }

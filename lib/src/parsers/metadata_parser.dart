@@ -20,12 +20,16 @@ class MetadataParser {
     for (final p in parsers) {
       output.title ??= _notNull(p.title);
       output.description ??= _notNull(p.description);
-      output.image ??= _imageUrl(p);
+      output.image ??= p.image;
       output.url ??= _notNull(p.url);
 
       if (output.hasAllMetadata) {
         break;
       }
+    }
+
+    if (output.url != null && output.image != null) {
+      output.image = Uri.parse(output.url).resolve(output.image).toString();
     }
 
     return output;
@@ -38,21 +42,20 @@ class MetadataParser {
     return value;
   }
 
-  static String _imageUrl(Metadata data) {
-    String imageLink = _notNull(data.image);
-    if (imageLink == null) return null;
-    if (imageLink.startsWith("http")) return imageLink;
-    var pageUrl = Uri.parse(data.url);
-    if (!imageLink.startsWith("/")) {
-      // Some image srcs don't begin with a slash, so the image url ends up being
-      // weirdly mangled if it's just appended to the page host. Example:
-      // imageLink = "assets/someImg.png"
-      // http://example.comassets/someImg.png
-      // So this should fix that
-      imageLink = "/$imageLink";
-    }
-    return pageUrl.scheme + "://" + pageUrl.host + imageLink;
-  }
+  // static String _imageUrl(Metadata data) {
+  //   String imageLink = _notNull(data.image);
+  //   if (imageLink == null) return null;
+  //   if (imageLink.startsWith("http")) return imageLink;
+  //   var pageUrl = Uri.parse(data.url);
+  //   if (!imageLink.startsWith("/")) {
+  //     // Some image srcs don't begin with a slash, so the image url ends up being
+  //     // weirdly mangled if it's just appended to the page host. Example:
+  //     // imageLink = "assets/someImg.png"
+  //     // http://example.comassets/someImg.png
+  //     // So this should fix that
+  //     imageLink = "/$imageLink";
+  //   }
+  // }
 
   static Metadata jsonLdProduct(Document document) {
     return JsonLdProductParser(document).parse();
