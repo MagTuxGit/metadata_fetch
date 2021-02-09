@@ -18,7 +18,8 @@ class JsonLdParser with BaseMetadataParser {
   dynamic _parseToJson(Document document) {
     final data = document?.head
         ?.querySelector("script[type='application/ld+json']")
-        ?.innerHtml;
+        ?.innerHtml
+        ?.replaceAll('\n', ' ');
     if (data == null) {
       return null;
     }

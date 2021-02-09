@@ -19,7 +19,7 @@ class JsonLdProductParser with BaseMetadataParser {
   JsonData _parseToJson(Document document) {
     final ldJsonItem = document?.head
         ?.querySelectorAll("script[type='application/ld+json']")
-        ?.map((e) => jsonDecode(e.innerHtml))
+        ?.map((e) => jsonDecode(e.innerHtml.replaceAll('\n', ' ')))
         ?.firstWhere((e) => e["@type"] == "Product", orElse: () => null);
     return ldJsonItem == null ? null : JsonData(ldJsonItem);
   }
