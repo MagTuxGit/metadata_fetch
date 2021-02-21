@@ -70,6 +70,10 @@ class JsonLdParser with BaseMetadataParser {
       result = result.first;
     }
 
+    if (result is Map<String, dynamic>) {
+      result = result["url"];
+    }
+
     if (result is String) {
       return result;
     }
