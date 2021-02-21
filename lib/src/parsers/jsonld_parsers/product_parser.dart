@@ -17,11 +17,23 @@ class JsonLdProductParser with BaseMetadataParser {
   }
 
   JsonData _parseToJson(Document document) {
-    final ldJsonItem = document?.head
+    var ldJsonItem = document?.head
         ?.querySelectorAll("script[type='application/ld+json']")
-        ?.map((e) => jsonDecode(e.innerHtml.replaceAll('\n', ' ')))
-        ?.firstWhere((e) => e["@type"] == "Product", orElse: () => null);
-    return ldJsonItem == null ? null : JsonData(ldJsonItem);
+        ?.map((e) => jsonDecode(e.innerHtml.replaceAll('\n', ' ')));
+
+    if (ldJsonItem == null) return null;
+    if (ldJsonItem is List) {
+      ldJsonItem = ldJsonItem.isEmpty ? null : ldJsonItem.first;
+    }
+
+    if (ldJsonItem != null && ldJsonItem is Map<String, dynamic>) {
+      var ldJsonProductItem = ldJsonItem.firstWhere((e) =>
+      e["@type"] == "Product",
+          orElse: () => null);
+      return ldJsonItem == null ? null : JsonData(ldJsonItem);
+    }
+
+    return null;
   }
   
   @override
