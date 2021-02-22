@@ -9,10 +9,32 @@ import 'base_parser.dart';
 class JsonLdParser with BaseMetadataParser {
   /// The [document] to be parse
   Document document;
-  dynamic _jsonData;
+  Map<String, dynamic> _jsonData;
 
   JsonLdParser(this.document) {
-    _jsonData = _parseToJson(document);
+    var jsonData = _parseToJson(document);
+
+    if (jsonData is List) {
+      jsonData = jsonData.first as Map<String, dynamic>;
+    }
+    if (jsonData == null) return;
+
+    var graphList = jsonData["@graph"] as List;
+    if (graphList != null) {
+      List<String> metaDataNodes = ["website", "newsarticle"];
+
+      for (var graphNode in graphList) {
+        if (graphNode is Map<String, dynamic>) {
+          String nodeType = (graphNode["@type"] as String)?.toLowerCase();
+          if (nodeType != null && metaDataNodes.contains(nodeType)) {
+            jsonData = graphNode;
+            break;
+          }
+        }
+      }
+    }
+
+    _jsonData = jsonData;
   }
 
   dynamic _parseToJson(Document document) {
@@ -30,39 +52,21 @@ class JsonLdParser with BaseMetadataParser {
   /// Get the [Metadata.title] from the [<title>] tag
   @override
   String get title {
-    final data = _jsonData;
-    if (data is List) {
-      return data?.first['name'];
-    } else if (data is Map) {
-      return data?.get('name') ?? data?.get('headline');
-    }
-    return null;
+    return _jsonData?.get('headline') ?? _jsonData?.get('name');
   }
 
   /// Get the [Metadata.description] from the <meta name="description" content=""> tag
   @override
   String get description {
-    final data = _jsonData;
-    if (data is List) {
-      return data?.first['description'] ?? data?.first['headline'];
-    } else if (data is Map) {
-      return data?.get('description') ?? data?.get('headline');
-    }
-    return null;
+    return _jsonData?.get('description');
   }
 
   /// Get the [Metadata.image] from the first <img> tag in the body;s
   @override
   String get image {
-    final data = _jsonData;
-    if (data is List && data.isNotEmpty) {
-      return _imageResultToString(data?.first['logo'] ?? data?.first['image']);
-    } else if (data is Map) {
-      return _imageResultToString(
-          data?.getDynamic('logo') ?? data?.getDynamic('image'));
-    }
-
-    return null;
+    var imageNode = _jsonData?.getDynamic('image') ??
+        _jsonData?.getDynamic('logo');
+    return _imageResultToString(imageNode);
   }
 
   String _imageResultToString(dynamic result) {
