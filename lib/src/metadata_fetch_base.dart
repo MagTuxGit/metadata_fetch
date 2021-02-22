@@ -68,6 +68,14 @@ Document responseToDocument(http.Response response) {
   try {
     document = parser.parse(utf8.decode(response.bodyBytes));
     document.requestUrl = response.request.url.toString();
+  } on FormatException catch (err) {
+    try {
+      document = parser.parse(
+          utf8.decode(response.bodyBytes.sublist(0, err.offset - 1)));
+      document.requestUrl = response.request.url.toString();
+    } catch (err) {
+      return document;
+    }
   } catch (err) {
     return document;
   }
