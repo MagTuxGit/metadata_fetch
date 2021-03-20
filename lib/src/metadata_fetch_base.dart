@@ -90,15 +90,18 @@ Metadata _extractMetadata(Document document) {
   return MetadataParser.parse(document);
 }
 
-Future<DocumentFetchResult> fetchDocument(url, {String userAgent}) async {
+Future<DocumentFetchResult> fetchDocument(String url, {String userAgent}) async {
   http.Response response;
 
   try {
-    response = await http.get(url, headers: {
+    response = await http.get(Uri.parse(url), headers: {
       'User-Agent': userAgent
     }).timeout(const Duration(seconds: 10));
   } on TimeoutException catch (_) {
     return DocumentFetchResult.timeout();
+  } on FormatException catch (_) {
+    // url is not valid
+    return DocumentFetchResult.getError();
   }
 
   if (response == null || response.statusCode >= 400) {
