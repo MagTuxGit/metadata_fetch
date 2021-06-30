@@ -5,5 +5,5 @@
 library metadata_fetch;
 
 export 'src/metadata_fetch_base.dart';
-export 'src/metadata_fetch_trand.dart';
+export 'src/metadata_fetch_base_ext.dart';
 export 'src/parsers/parsers.dart';

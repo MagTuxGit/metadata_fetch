@@ -8,7 +8,7 @@ import 'package:metadata_fetch/src/parsers/parsers.dart';
 import 'package:metadata_fetch/src/utils/util.dart';
 import 'package:string_validator/string_validator.dart';
 
-class MetadataFetchTrand {
+class MetadataFetchExt {
   /// Fetches a [url], validates it, and returns [Metadata].
   static Future<Metadata?> extract(String url) async {
     if (!isURL(url)) {
