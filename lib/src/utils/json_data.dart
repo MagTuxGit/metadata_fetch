@@ -22,5 +22,6 @@ class JsonData {
     } else if (data is Map) {
       return JsonData.fromData(data[key]);
     }
+    return null;
   }
 }

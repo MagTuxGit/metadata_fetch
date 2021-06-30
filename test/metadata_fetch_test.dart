@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 // TODO: Improve testing
 void main() {
   test('JSON Serialization', () async {
-    var url = 'https://flutter.dev';
+    var url = Uri.parse('https://flutter.dev');
     var response = await http.get(url);
     var document = responseToDocument(response);
     var data = MetadataParser.parse(document);
@@ -19,7 +19,7 @@ void main() {
   });
 
   test('Metadata Parser', () async {
-    var url = 'https://flutter.dev';
+    var url = Uri.parse('https://flutter.dev');
     var response = await http.get(url);
     var document = responseToDocument(response);
 
@@ -43,7 +43,7 @@ void main() {
   });
   group('Metadata parsers', () {
     test('JSONLD', () async {
-      var url = 'https://www.epicurious.com/';
+      var url = Uri.parse('https://www.epicurious.com/');
       var response = await http.get(url);
       var document = responseToDocument(response);
       // print(response.statusCode);
@@ -52,8 +52,8 @@ void main() {
     });
 
     test('JSONLD II', () async {
-      var url =
-          'https://www.epicurious.com/expert-advice/best-soy-sauce-chefs-pick-article';
+      var url = Uri.parse(
+          'https://www.epicurious.com/expert-advice/best-soy-sauce-chefs-pick-article');
       var response = await http.get(url);
       var document = responseToDocument(response);
       // print(response.statusCode);
@@ -62,8 +62,8 @@ void main() {
     });
 
     test('JSONLD III', () async {
-      var url =
-          'https://medium.com/@quicky316/install-flutter-sdk-on-windows-without-android-studio-102fdf567ce4';
+      var url = Uri.parse(
+          'https://medium.com/@quicky316/install-flutter-sdk-on-windows-without-android-studio-102fdf567ce4');
       var response = await http.get(url);
       var document = responseToDocument(response);
       // print(response.statusCode);
@@ -72,7 +72,7 @@ void main() {
     });
 
     test('JSONLD IV', () async {
-      var url = 'https://www.distilled.net/';
+      var url = Uri.parse('https://www.distilled.net/');
       var response = await http.get(url);
       var document = responseToDocument(response);
       // print(response.statusCode);
@@ -80,7 +80,7 @@ void main() {
       print(JsonLdParser(document));
     });
     test('HTML', () async {
-      var url = 'https://flutter.dev';
+      var url = Uri.parse('https://flutter.dev');
       var response = await http.get(url);
       var document = responseToDocument(response);
       print(response.statusCode);
@@ -91,7 +91,7 @@ void main() {
     });
 
     test('OpenGraph Parser', () async {
-      var url = 'https://flutter.dev';
+      var url = Uri.parse('https://flutter.dev');
       var response = await http.get(url);
       var document = responseToDocument(response);
       print(response.statusCode);
@@ -103,7 +103,7 @@ void main() {
     });
 
     test('OpenGraph Youtube Test', () async {
-      String url = 'https://www.youtube.com/watch?v=0jz0GAFNNIo';
+      final url = Uri.parse('https://www.youtube.com/watch?v=0jz0GAFNNIo');
       var response = await http.get(url);
       var document = responseToDocument(response);
       print(OpenGraphParser(document));
@@ -115,8 +115,8 @@ void main() {
     });
 
     test('TwitterCard Parser', () async {
-      var url =
-          'https://www.epicurious.com/expert-advice/best-soy-sauce-chefs-pick-article';
+      var url = Uri.parse(
+          'https://www.epicurious.com/expert-advice/best-soy-sauce-chefs-pick-article');
       var response = await http.get(url);
       var document = responseToDocument(response);
       print(response.statusCode);
@@ -130,7 +130,7 @@ void main() {
     });
 
     test('Faulty', () async {
-      var url = 'https://google.ca';
+      var url = Uri.parse('https://google.ca');
       var response = await http.get(url);
       var document = responseToDocument(response);
       print(response.statusCode);

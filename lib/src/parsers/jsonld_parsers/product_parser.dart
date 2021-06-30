@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:html/dom.dart';
-import 'package:metadata_fetch/src/utils/util.dart';
 import 'package:metadata_fetch/src/utils/json_data.dart';
 
 import '../base_parser.dart';
@@ -30,7 +29,7 @@ class JsonLdProductParser with BaseMetadataParser {
       var ldJsonProductItem = ldJsonItem.firstWhere((e) =>
       e["@type"] == "Product",
           orElse: () => null);
-      return ldJsonItem == null ? null : JsonData(ldJsonItem);
+      return ldJsonProductItem == null ? null : JsonData(ldJsonProductItem);
     }
 
     return null;
