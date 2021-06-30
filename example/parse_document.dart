@@ -2,11 +2,12 @@ import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  var url = Uri.parse('https://flutter.dev');
-  var response = await http.get(url);
-  var document = responseToDocument(response);
+  var url = 'https://flutter.dev';
+  var response = await http.get(Uri.parse(url));
+  var document = MetadataFetch.responseToDocument(response);
 
-  var data = MetadataParser.parse(document);
+  // Provide a url fallback if no urls were extracted
+  var data = MetadataParser.parse(document, url: url);
   print(data);
 
   // Just Opengraph

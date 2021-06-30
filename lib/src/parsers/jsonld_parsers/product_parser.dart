@@ -8,17 +8,17 @@ import '../base_parser.dart';
 /// Takes a [http.document] and parses [Metadata] from `json-ld` data in `<script>`
 class JsonLdProductParser with BaseMetadataParser {
   /// The [document] to be parse
-  Document document;
-  JsonData _jsonData;
+  Document? document;
+  JsonData? _jsonData;
 
   JsonLdProductParser(this.document) {
     _jsonData = _parseToJson(document);
   }
 
-  JsonData _parseToJson(Document document) {
+  JsonData? _parseToJson(Document? document) {
     var ldJsonItem = document?.head
         ?.querySelectorAll("script[type='application/ld+json']")
-        ?.map((e) => jsonDecode(e.innerHtml.replaceAll('\n', ' ')));
+        .map((e) => jsonDecode(e.innerHtml.replaceAll('\n', ' ')));
 
     if (ldJsonItem == null) return null;
     if (ldJsonItem is List) {
@@ -36,26 +36,29 @@ class JsonLdProductParser with BaseMetadataParser {
   }
   
   @override
-  String get title => _jsonData?.getValue('name');
+  String? get title => _jsonData?.getValue('name');
 
   @override
-  String get description {
-    String description = _jsonData?.getValue('description');
+  String? get description {
+    String? description = _jsonData?.getValue('description');
 
     var offer = _jsonData?.getDynamic('offers');
     if (offer != null) {
       var price = offer.getValue('price');
+      var currency = offer.getValue('priceCurrency') ?? '';
       if (price != null) {
-        return ((description != null && description.isNotEmpty) ? description + '\n\n' : "")
-            + offer.getValue('priceCurrency') + ' ' + price;
+        return ((description != null && description.isNotEmpty)
+                ? description + '\n\n'
+                : "") +
+            currency + ' ' + price;
       }
     }
     return description;
   }
 
   @override
-  String get image => _jsonData?.getValue('image');
+  String? get image => _jsonData?.getValue('image');
 
   @override
-  String get url => _jsonData?.getValue('url');
+  String? get url => _jsonData?.getValue('url');
 }

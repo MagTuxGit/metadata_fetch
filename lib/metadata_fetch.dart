@@ -4,8 +4,6 @@
 /// Utility functions [extract] and [responseToDocument] help retrieving and decoding documents.
 library metadata_fetch;
 
-//export 'src/metadata_fetch_base.dart';
+export 'src/metadata_fetch_base.dart';
 export 'src/metadata_fetch_trand.dart';
 export 'src/parsers/parsers.dart';
-
-// TODO: Export any libraries intended for clients of this package.
